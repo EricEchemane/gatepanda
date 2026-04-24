@@ -16,5 +16,7 @@ export function useEventDashboardQuery(
         cache: "no-store",
       }),
     initialData,
+    refetchInterval: 2_000,
+    refetchIntervalInBackground: true,
   })
 }
