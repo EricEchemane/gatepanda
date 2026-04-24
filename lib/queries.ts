@@ -277,6 +277,40 @@ export async function getVerificationPayload(
   }
 }
 
+export async function getEventJoinPageData(
+  eventId: string,
+  attendeeId?: string
+) {
+  if (!db) {
+    return null
+  }
+
+  const event = await db.query.events.findFirst({
+    where: eq(events.id, eventId),
+    with: {
+      owner: true,
+    },
+  })
+
+  if (!event) {
+    return null
+  }
+
+  const attendance = attendeeId
+    ? await db.query.attendances.findFirst({
+        where: and(
+          eq(attendances.eventId, eventId),
+          eq(attendances.attendeeId, attendeeId)
+        ),
+      })
+    : null
+
+  return {
+    event,
+    attendance,
+  }
+}
+
 export type HomePageData = Awaited<ReturnType<typeof getHomePageData>>
 export type EventDashboardData = NonNullable<
   Awaited<ReturnType<typeof getEventDashboard>>

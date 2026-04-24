@@ -4,6 +4,10 @@ export function buildAttendeeQrUrl(publicId: string) {
   return `${env.appUrl.replace(/\/$/, "")}/attendee/${publicId}`
 }
 
+export function buildEventJoinQrUrl(eventId: string) {
+  return `${env.appUrl.replace(/\/$/, "")}/events/${eventId}/join`
+}
+
 export function extractAttendeePublicId(value: string) {
   const trimmed = value.trim()
 

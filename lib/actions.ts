@@ -189,3 +189,44 @@ export async function checkInAttendeeAction(formData: FormData) {
   revalidatePath(`/events/${eventId}/verify`)
   redirect(`/events/${eventId}?checkedIn=${attendeeId}`)
 }
+
+export async function selfCheckInToEventAction(formData: FormData) {
+  const viewer = await requireUser()
+  const database = assertDb()
+
+  const eventId = String(formData.get("eventId") ?? "")
+
+  if (!eventId) {
+    redirect("/")
+  }
+
+  const event = await database.query.events.findFirst({
+    where: eq(events.id, eventId),
+  })
+
+  if (!event) {
+    redirect("/")
+  }
+
+  await database
+    .insert(attendances)
+    .values({
+      eventId,
+      attendeeId: viewer.id,
+      scannedById: null,
+      status: "checked_in",
+      checkedInAt: new Date(),
+    })
+    .onConflictDoUpdate({
+      target: [attendances.eventId, attendances.attendeeId],
+      set: {
+        scannedById: null,
+        status: "checked_in",
+        checkedInAt: new Date(),
+      },
+    })
+
+  revalidatePath(`/events/${eventId}`)
+  revalidatePath(`/events/${eventId}/join`)
+  redirect(`/events/${eventId}/join?checkedIn=1`)
+}

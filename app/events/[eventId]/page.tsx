@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
+import QRCode from "qrcode"
 
 import { AppShell } from "@/components/app-shell"
 import { EventWorkspaceClient } from "@/components/event-workspace-client"
@@ -10,6 +11,7 @@ import { hasDatabase } from "@/lib/env"
 import { formatDateTime } from "@/lib/formatters"
 import { serializeEventDashboard } from "@/lib/query-contracts"
 import { getEventDashboard } from "@/lib/queries"
+import { buildEventJoinQrUrl } from "@/lib/qr"
 
 export const dynamic = "force-dynamic"
 
@@ -56,6 +58,16 @@ export default async function EventDashboardPage({
     notFound()
   }
 
+  const joinUrl = buildEventJoinQrUrl(eventId)
+  const qrDataUrl = await QRCode.toDataURL(joinUrl, {
+    margin: 1,
+    width: 320,
+    color: {
+      dark: "#000000",
+      light: "#ffffff",
+    },
+  })
+
   return (
     <AppShell
       user={session.user}
@@ -70,6 +82,9 @@ export default async function EventDashboardPage({
       <EventWorkspaceClient
         eventId={eventId}
         initialData={serializeEventDashboard(dashboard)}
+        eventName={dashboard.event.name}
+        joinUrl={joinUrl}
+        qrDataUrl={qrDataUrl}
       />
     </AppShell>
   )
