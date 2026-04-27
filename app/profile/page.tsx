@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 
 import { AppShell } from "@/components/app-shell"
 import { SetupCallout } from "@/components/setup-callout"
-import { Button } from "@/components/ui/button"
+import { SubmitButton } from "@/components/submit-button"
 import {
   Card,
   CardContent,
@@ -142,9 +142,13 @@ export default async function ProfilePage() {
                     placeholder="+63 9XX XXX XXXX"
                   />
                 </div>
-                <Button type="submit" className="w-full sm:w-fit">
+                <SubmitButton
+                  type="submit"
+                  className="w-full sm:w-fit"
+                  pendingText="Saving profile..."
+                >
                   Save profile
-                </Button>
+                </SubmitButton>
               </form>
             ) : (
               <SetupCallout

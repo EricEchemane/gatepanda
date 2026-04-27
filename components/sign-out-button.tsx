@@ -1,16 +1,25 @@
 "use client"
 
+import { useTransition } from "react"
 import { signOut } from "next-auth/react"
 
-import { Button } from "@/components/ui/button"
+import { LoadingButton } from "@/components/loading-button"
 
 export function SignOutButton() {
+  const [isPending, startTransition] = useTransition()
+
   return (
-    <Button
+    <LoadingButton
       variant="outline"
-      onClick={() => void signOut({ callbackUrl: "/" })}
+      loading={isPending}
+      loadingText="Signing out..."
+      onClick={() =>
+        startTransition(() => {
+          void signOut({ callbackUrl: "/" })
+        })
+      }
     >
       Sign out
-    </Button>
+    </LoadingButton>
   )
 }

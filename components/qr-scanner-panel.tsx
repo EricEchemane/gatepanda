@@ -3,7 +3,7 @@
 import { useId, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 
-import { Button } from "@/components/ui/button"
+import { LoadingButton } from "@/components/loading-button"
 import {
   Card,
   CardContent,
@@ -71,9 +71,11 @@ export function QrScannerPanel({ eventId }: QrScannerPanelProps) {
             onChange={(event) => setManualValue(event.target.value)}
             placeholder="https://your-app.com/attendee/public-id"
           />
-          <Button
+          <LoadingButton
             className="w-full"
-            disabled={!manualValue.trim() || isPending}
+            loading={isPending}
+            loadingText="Opening verification..."
+            disabled={!manualValue.trim()}
             onClick={() =>
               startTransition(() => {
                 router.push(
@@ -85,7 +87,7 @@ export function QrScannerPanel({ eventId }: QrScannerPanelProps) {
             }
           >
             Verify attendee
-          </Button>
+          </LoadingButton>
         </CardContent>
       </Card>
     </div>

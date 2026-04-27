@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { AppShell } from "@/components/app-shell"
 import { GoogleSignInButton } from "@/components/google-sign-in-button"
 import { SetupCallout } from "@/components/setup-callout"
+import { SubmitButton } from "@/components/submit-button"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -184,11 +185,19 @@ export default async function EventJoinPage({ params }: EventJoinPageProps) {
 
             <form action={selfCheckInToEventAction} className="grid gap-3">
               <input type="hidden" name="eventId" value={joinData.event.id} />
-              <Button type="submit" className="w-full">
+              <SubmitButton
+                type="submit"
+                className="w-full"
+                pendingText={
+                  joinData.attendance
+                    ? "Refreshing attendance..."
+                    : "Signing into event..."
+                }
+              >
                 {joinData.attendance
                   ? "Refresh my check-in time"
                   : "Sign me into this event"}
-              </Button>
+              </SubmitButton>
             </form>
           </CardContent>
         </Card>

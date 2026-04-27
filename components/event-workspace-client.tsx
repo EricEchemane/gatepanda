@@ -4,6 +4,7 @@ import Link from "next/link"
 
 import { EventDashboardClient } from "@/components/event-dashboard-client"
 import { EventJoinQrCard } from "@/components/event-join-qr-card"
+import { SubmitButton } from "@/components/submit-button"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -119,9 +120,13 @@ export function EventWorkspaceClient({
                     placeholder="Reserved for VIP speakers, booth pickup only, etc."
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <SubmitButton
+                  type="submit"
+                  className="w-full"
+                  pendingText="Saving inventory..."
+                >
                   Save inventory item
-                </Button>
+                </SubmitButton>
               </form>
               {isError ? (
                 <p className="mt-4 text-sm text-destructive">

@@ -1,8 +1,9 @@
 "use client"
 
+import { useTransition } from "react"
 import { signIn } from "next-auth/react"
 
-import { Button } from "@/components/ui/button"
+import { LoadingButton } from "@/components/loading-button"
 
 type GoogleSignInButtonProps = {
   configured: boolean
@@ -13,13 +14,21 @@ export function GoogleSignInButton({
   configured,
   callbackUrl = "/",
 }: GoogleSignInButtonProps) {
+  const [isPending, startTransition] = useTransition()
+
   return (
-    <Button
+    <LoadingButton
       size="lg"
+      loading={isPending}
+      loadingText="Connecting to Google..."
       disabled={!configured}
-      onClick={() => void signIn("google", { callbackUrl })}
+      onClick={() =>
+        startTransition(() => {
+          void signIn("google", { callbackUrl })
+        })
+      }
     >
       {configured ? "Continue with Google" : "Google auth needs setup"}
-    </Button>
+    </LoadingButton>
   )
 }

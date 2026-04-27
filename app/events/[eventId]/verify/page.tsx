@@ -2,6 +2,7 @@ import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 
 import { AppShell } from "@/components/app-shell"
+import { SubmitButton } from "@/components/submit-button"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -166,11 +167,19 @@ export default async function VerifyPage({
                   name="attendeeId"
                   value={payload.attendee.id}
                 />
-                <Button type="submit" className="w-full">
+                <SubmitButton
+                  type="submit"
+                  className="w-full"
+                  pendingText={
+                    payload.attendance
+                      ? "Refreshing check-in..."
+                      : "Confirming check-in..."
+                  }
+                >
                   {payload.attendance
                     ? "Refresh check-in timestamp"
                     : "Confirm check-in"}
-                </Button>
+                </SubmitButton>
               </form>
             </CardContent>
           </Card>

@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 
+import { SubmitButton } from "@/components/submit-button"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -144,9 +145,13 @@ export function HomeOverviewClient({
                   placeholder="Clinical updates, breakout sessions, and sponsor booths."
                 />
               </div>
-              <Button type="submit" className="w-full sm:w-fit">
+              <SubmitButton
+                type="submit"
+                className="w-full sm:w-fit"
+                pendingText="Creating event..."
+              >
                 Create event dashboard
-              </Button>
+              </SubmitButton>
             </form>
           </CardContent>
         </Card>
