@@ -3,7 +3,6 @@
 import Link from "next/link"
 
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -19,6 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { useAttendanceFilters } from "@/hooks/use-attendance-filters"
 import {
   formatDateTime,
@@ -27,7 +34,6 @@ import {
 } from "@/lib/formatters"
 
 type DashboardProps = {
-  eventId: string
   attendees: Array<{
     id: string
     attendeeId: string
@@ -52,11 +58,7 @@ type DashboardProps = {
   }>
 }
 
-export function EventDashboardClient({
-  eventId,
-  attendees,
-  inventory,
-}: DashboardProps) {
+export function EventDashboardClient({ attendees, inventory }: DashboardProps) {
   const { query, setQuery, status, setStatus, filteredRows, counts } =
     useAttendanceFilters(attendees)
 
@@ -65,19 +67,19 @@ export function EventDashboardClient({
       <section className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardDescription>Total Check-ins</CardDescription>
+            <CardDescription>Total check-ins</CardDescription>
             <CardTitle className="text-3xl">{counts.checkedIn}</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
-            <CardDescription>Visible in Table</CardDescription>
+            <CardDescription>Visible in table</CardDescription>
             <CardTitle className="text-3xl">{counts.visible}</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader>
-            <CardDescription>Inventory Remaining</CardDescription>
+            <CardDescription>Inventory remaining</CardDescription>
             <CardTitle className="text-3xl">
               {inventory.reduce((sum, item) => sum + item.remaining, 0)}
             </CardTitle>
@@ -85,20 +87,15 @@ export function EventDashboardClient({
         </Card>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
+      <section className="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
         <Card>
           <CardHeader className="gap-4">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <CardTitle>Attendance Dashboard</CardTitle>
-                <CardDescription>
-                  Search recent check-ins, verify PRC details, and spot
-                  duplicate scans quickly.
-                </CardDescription>
-              </div>
-              <Button asChild>
-                <Link href={`/events/${eventId}/scanner`}>Open scanner</Link>
-              </Button>
+            <div>
+              <CardTitle>Attendance dashboard</CardTitle>
+              <CardDescription>
+                Search recent check-ins, verify PRC details, and spot duplicate
+                scans quickly.
+              </CardDescription>
             </div>
             <div className="grid gap-3 md:grid-cols-[1fr_200px]">
               <Input
@@ -119,83 +116,74 @@ export function EventDashboardClient({
             </div>
           </CardHeader>
           <CardContent>
-            <div className="overflow-hidden rounded-3xl border border-border/70">
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-left text-sm">
-                  <thead className="bg-muted/60 text-xs tracking-[0.2em] text-muted-foreground uppercase">
-                    <tr>
-                      <th className="px-4 py-3 font-medium">Attendee</th>
-                      <th className="px-4 py-3 font-medium">Profession</th>
-                      <th className="px-4 py-3 font-medium">PRC</th>
-                      <th className="px-4 py-3 font-medium">Checked in</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredRows.map((attendee) => (
-                      <tr
-                        key={attendee.id}
-                        className="border-t border-border/70 bg-background/70"
-                      >
-                        <td className="px-4 py-4">
-                          <div className="font-medium">
-                            {attendee.name ?? attendee.email}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {attendee.organization ?? attendee.email}
-                          </div>
-                        </td>
-                        <td className="px-4 py-4">
-                          <div>{formatProfession(attendee.profession)}</div>
-                          <div className="text-xs text-muted-foreground">
-                            <Link
-                              href={`/attendee/${attendee.publicId}`}
-                              className="underline decoration-dotted underline-offset-4"
-                            >
-                              Public profile
-                            </Link>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4">
-                          {attendee.prcNumber ?? "Not supplied"}
-                        </td>
-                        <td className="px-4 py-4">
-                          <div>{formatDateTime(attendee.checkedInAt)}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {formatRelativeTime(attendee.checkedInAt)}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                    {filteredRows.length === 0 ? (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="px-4 py-10 text-center text-muted-foreground"
+            <div className="overflow-hidden rounded-lg border">
+              <Table>
+                <TableHeader className="bg-muted/40">
+                  <TableRow>
+                    <TableHead>Attendee</TableHead>
+                    <TableHead className="w-[160px]">Checked in</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredRows.map((attendee) => (
+                    <TableRow key={attendee.id}>
+                      <TableCell>
+                        <div className="font-medium">
+                          {attendee.name ?? attendee.email}
+                        </div>
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          {formatProfession(attendee.profession)}
+                          {attendee.prcNumber
+                            ? ` • PRC ${attendee.prcNumber}`
+                            : " • PRC not supplied"}
+                        </div>
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          {attendee.organization ?? attendee.email}
+                        </div>
+                        <Link
+                          href={`/attendee/${attendee.publicId}`}
+                          className="mt-2 inline-block text-xs underline decoration-dotted underline-offset-4"
                         >
-                          No attendees match the current search and filter.
-                        </td>
-                      </tr>
-                    ) : null}
-                  </tbody>
-                </table>
-              </div>
+                          Open public profile
+                        </Link>
+                      </TableCell>
+                      <TableCell className="align-top">
+                        <div>{formatDateTime(attendee.checkedInAt)}</div>
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          {formatRelativeTime(attendee.checkedInAt)}
+                        </div>
+                        <Badge variant="secondary" className="mt-2">
+                          {attendee.status.replace("_", " ")}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {filteredRows.length === 0 ? (
+                    <TableRow>
+                      <TableCell
+                        colSpan={2}
+                        className="py-10 text-center text-muted-foreground"
+                      >
+                        No attendees match the current search and filter.
+                      </TableCell>
+                    </TableRow>
+                  ) : null}
+                </TableBody>
+              </Table>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Inventory Snapshot</CardTitle>
+            <CardTitle>Inventory snapshot</CardTitle>
             <CardDescription>
               Track freebies and giveaway stock at a glance.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             {inventory.map((item) => (
-              <div
-                key={item.id}
-                className="rounded-3xl border border-border/70 bg-background/70 p-4"
-              >
+              <div key={item.id} className="rounded-lg border bg-muted/20 p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="font-medium">{item.name}</div>
@@ -208,19 +196,19 @@ export function EventDashboardClient({
                   </Badge>
                 </div>
                 <div className="mt-3 grid grid-cols-3 gap-2 text-xs text-muted-foreground">
-                  <div className="rounded-2xl bg-muted/60 px-3 py-2">
+                  <div className="rounded-lg border bg-muted/30 px-3 py-2">
                     <div className="font-medium text-foreground">
                       {item.stock}
                     </div>
                     <div>Total</div>
                   </div>
-                  <div className="rounded-2xl bg-muted/60 px-3 py-2">
+                  <div className="rounded-lg border bg-muted/30 px-3 py-2">
                     <div className="font-medium text-foreground">
                       {item.claimed}
                     </div>
                     <div>Claimed</div>
                   </div>
-                  <div className="rounded-2xl bg-muted/60 px-3 py-2">
+                  <div className="rounded-lg border bg-muted/30 px-3 py-2">
                     <div className="font-medium text-foreground">
                       {item.remaining}
                     </div>
@@ -235,7 +223,7 @@ export function EventDashboardClient({
               </div>
             ))}
             {inventory.length === 0 ? (
-              <div className="rounded-3xl border border-dashed border-border px-4 py-10 text-center text-sm text-muted-foreground">
+              <div className="rounded-lg border border-dashed px-4 py-10 text-center text-sm text-muted-foreground">
                 No freebie inventory has been added yet.
               </div>
             ) : null}

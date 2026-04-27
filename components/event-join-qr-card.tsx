@@ -36,6 +36,9 @@ export function EventJoinQrCard({
           />
         </div>
         <div className="rounded-lg border bg-muted/30 p-3 text-sm text-muted-foreground">
+          Ask attendees to open their camera and scan this code.
+        </div>
+        <div className="rounded-lg border bg-muted/30 p-3 text-sm break-all text-muted-foreground">
           {joinUrl}
         </div>
       </CardContent>

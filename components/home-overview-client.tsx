@@ -37,7 +37,7 @@ export function HomeOverviewClient({
   return (
     <div className="grid gap-6">
       {!hasDatabase ? (
-        <Card className="border-dashed border-primary/30 bg-primary/5">
+        <Card className="border-dashed bg-background">
           <CardHeader>
             <CardTitle>
               Supabase PostgreSQL still needs to be connected
@@ -55,34 +55,6 @@ export function HomeOverviewClient({
           </CardContent>
         </Card>
       ) : null}
-
-      <section className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardDescription>Events created</CardDescription>
-            <CardTitle className="text-3xl">{data.stats.totalEvents}</CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Total check-ins</CardDescription>
-            <CardTitle className="text-3xl">
-              {data.stats.totalCheckIns}
-            </CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription className="flex items-center gap-2">
-              Inventory units tracked
-              {isFetching ? <span className="text-xs">Refreshing…</span> : null}
-            </CardDescription>
-            <CardTitle className="text-3xl">
-              {data.stats.totalInventory}
-            </CardTitle>
-          </CardHeader>
-        </Card>
-      </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <Card>
@@ -147,7 +119,7 @@ export function HomeOverviewClient({
               </div>
               <SubmitButton
                 type="submit"
-                className="w-full sm:w-fit"
+                className="w-full"
                 pendingText="Creating event..."
               >
                 Create event dashboard
@@ -160,12 +132,12 @@ export function HomeOverviewClient({
           <CardHeader>
             <CardTitle>Admin readiness</CardTitle>
             <CardDescription>
-              Complete your own attendee record so your QR and check-in profile
-              look polished.
+              Complete your attendee record so your QR and check-in profile stay
+              ready for live events.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">Admin profile</div>
               <div className="mt-1 text-xl font-semibold">
                 {data.profile?.name ?? user.name}
@@ -174,17 +146,17 @@ export function HomeOverviewClient({
                 {formatProfession(data.profile?.profession)}
               </div>
             </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">PRC number</div>
               <div className="mt-1 text-xl font-semibold">
                 {data.profile?.prcNumber ?? "Add from profile page"}
               </div>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild className="flex-1 sm:flex-none">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Button asChild className="w-full">
                 <Link href="/profile">Edit profile</Link>
               </Button>
-              <Button asChild variant="outline" className="flex-1 sm:flex-none">
+              <Button asChild variant="outline" className="w-full">
                 <Link href="/my-qr">View my QR</Link>
               </Button>
             </div>
@@ -192,11 +164,39 @@ export function HomeOverviewClient({
         </Card>
       </section>
 
+      <section className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardDescription>Events created</CardDescription>
+            <CardTitle className="text-3xl">{data.stats.totalEvents}</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardDescription>Total check-ins</CardDescription>
+            <CardTitle className="text-3xl">
+              {data.stats.totalCheckIns}
+            </CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardDescription className="flex items-center gap-2">
+              Inventory units tracked
+              {isFetching ? <span className="text-xs">Refreshing…</span> : null}
+            </CardDescription>
+            <CardTitle className="text-3xl">
+              {data.stats.totalInventory}
+            </CardTitle>
+          </CardHeader>
+        </Card>
+      </section>
+
       <section className="grid gap-4 lg:grid-cols-2">
         {data.events.map((event) => (
           <Card key={event.id}>
             <CardHeader>
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <CardTitle>{event.name}</CardTitle>
                   <CardDescription>
@@ -211,30 +211,30 @@ export function HomeOverviewClient({
                 {event.description ?? "No description yet."}
               </p>
               <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground">
-                <div className="rounded-lg bg-muted px-3 py-2">
+                <div className="rounded-lg border bg-muted/30 px-3 py-2">
                   <div className="font-medium text-foreground">
                     {event.attendeeCount}
                   </div>
                   <div>Check-ins</div>
                 </div>
-                <div className="rounded-lg bg-muted px-3 py-2">
+                <div className="rounded-lg border bg-muted/30 px-3 py-2">
                   <div className="font-medium text-foreground">
                     {event.itemCount}
                   </div>
                   <div>Inventory</div>
                 </div>
-                <div className="rounded-lg bg-muted px-3 py-2">
+                <div className="rounded-lg border bg-muted/30 px-3 py-2">
                   <div className="font-medium text-foreground">
                     {event.inventoryRemaining}
                   </div>
                   <div>Remaining</div>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-3">
-                <Button asChild>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Button asChild className="w-full">
                   <Link href={`/events/${event.id}`}>Open dashboard</Link>
                 </Button>
-                <Button asChild variant="outline">
+                <Button asChild variant="outline" className="w-full">
                   <Link href={`/events/${event.id}/scanner`}>Open scanner</Link>
                 </Button>
               </div>
@@ -246,7 +246,8 @@ export function HomeOverviewClient({
             <CardHeader>
               <CardTitle>No events yet</CardTitle>
               <CardDescription>
-                Your first event dashboard will appear here after you create it.
+                Your event list will appear here after you create the first
+                dashboard above.
               </CardDescription>
             </CardHeader>
           </Card>

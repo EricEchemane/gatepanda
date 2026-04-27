@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { AppShell } from "@/components/app-shell"
 import { SetupCallout } from "@/components/setup-callout"
 import { SubmitButton } from "@/components/submit-button"
+import { Badge } from "@/components/ui/badge"
 import {
   Card,
   CardContent,
@@ -41,7 +42,7 @@ export default async function ProfilePage() {
       title="Clinician Profile"
       description="Keep your PRC details and professional profile current so event admins can verify attendees quickly at the door."
     >
-      <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
         <Card>
           <CardHeader>
             <CardTitle>Edit attendee identity</CardTitle>
@@ -144,7 +145,7 @@ export default async function ProfilePage() {
                 </div>
                 <SubmitButton
                   type="submit"
-                  className="w-full sm:w-fit"
+                  className="w-full"
                   pendingText="Saving profile..."
                 >
                   Save profile
@@ -172,7 +173,10 @@ export default async function ProfilePage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <Badge variant="secondary" className="w-fit">
+              {formatProfession(profile?.profession)}
+            </Badge>
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">
                 Displayed name
               </div>
@@ -180,13 +184,13 @@ export default async function ProfilePage() {
                 {profile?.name ?? session.user.name ?? "Your name"}
               </div>
             </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">Profession</div>
               <div className="mt-1 text-xl font-semibold">
                 {formatProfession(profile?.profession)}
               </div>
             </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">PRC number</div>
               <div className="mt-1 text-xl font-semibold">
                 {profile?.prcNumber ?? "Add your PRC number"}

@@ -40,104 +40,111 @@ export function EventWorkspaceClient({
   )
 
   return (
-    <div className="grid gap-6">
-      <section className="grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between gap-3">
-            <div className="text-sm text-muted-foreground">
+    <div className="grid gap-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:items-start">
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick actions</CardTitle>
+            <CardDescription>
+              Keep the most common event tasks close at hand during live
+              check-in.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
               {isFetching ? "Refreshing dashboard..." : "Dashboard synced"}
             </div>
-            <Button asChild variant="outline" size="sm">
-              <Link href={`/events/${eventId}/scanner`}>Scan attendees</Link>
-            </Button>
-          </div>
+            <div className="grid gap-3">
+              <Button asChild className="w-full">
+                <Link href={`/events/${eventId}/scanner`}>
+                  Scan attendee QR
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full">
+                <Link href={`/events/${eventId}/join`}>
+                  Open attendee sign-in page
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
-          <EventDashboardClient
-            eventId={eventId}
-            attendees={data.attendees}
-            inventory={data.inventory}
-          />
-        </div>
+        <EventJoinQrCard
+          eventName={eventName}
+          joinUrl={joinUrl}
+          qrDataUrl={qrDataUrl}
+        />
 
-        <div className="space-y-6">
-          <EventJoinQrCard
-            eventName={eventName}
-            joinUrl={joinUrl}
-            qrDataUrl={qrDataUrl}
-          />
+        <Card className="h-fit">
+          <CardHeader>
+            <CardTitle>Add giveaway inventory</CardTitle>
+            <CardDescription>
+              Build a live stock list for freebies, certificates, and sponsor
+              kits.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form action={addFreebieItemAction} className="grid gap-4">
+              <input type="hidden" name="eventId" value={eventId} />
+              <div className="grid gap-2">
+                <label htmlFor="name" className="text-sm font-medium">
+                  Item name
+                </label>
+                <Input
+                  id="name"
+                  name="name"
+                  placeholder="Lanyard kit"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <label htmlFor="category" className="text-sm font-medium">
+                  Category
+                </label>
+                <Input
+                  id="category"
+                  name="category"
+                  placeholder="Starter pack, premium, raffle"
+                />
+              </div>
+              <div className="grid gap-2">
+                <label htmlFor="stock" className="text-sm font-medium">
+                  Starting stock
+                </label>
+                <Input id="stock" name="stock" type="number" min={1} required />
+              </div>
+              <div className="grid gap-2">
+                <label htmlFor="notes" className="text-sm font-medium">
+                  Notes
+                </label>
+                <Textarea
+                  id="notes"
+                  name="notes"
+                  placeholder="Reserved for VIP speakers, booth pickup only, etc."
+                />
+              </div>
+              <SubmitButton
+                type="submit"
+                className="w-full"
+                pendingText="Saving inventory..."
+              >
+                Save inventory item
+              </SubmitButton>
+            </form>
+            {isError ? (
+              <p className="mt-4 text-sm text-destructive">
+                Live event refresh failed. Showing the last available dashboard
+                snapshot.
+              </p>
+            ) : null}
+          </CardContent>
+        </Card>
+      </div>
 
-          <Card className="h-fit">
-            <CardHeader>
-              <CardTitle>Add giveaway inventory</CardTitle>
-              <CardDescription>
-                Build a live stock list for freebies, certificates, and sponsor
-                kits.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form action={addFreebieItemAction} className="grid gap-4">
-                <input type="hidden" name="eventId" value={eventId} />
-                <div className="grid gap-2">
-                  <label htmlFor="name" className="text-sm font-medium">
-                    Item name
-                  </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    placeholder="Lanyard kit"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <label htmlFor="category" className="text-sm font-medium">
-                    Category
-                  </label>
-                  <Input
-                    id="category"
-                    name="category"
-                    placeholder="Starter pack, premium, raffle"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <label htmlFor="stock" className="text-sm font-medium">
-                    Starting stock
-                  </label>
-                  <Input
-                    id="stock"
-                    name="stock"
-                    type="number"
-                    min={1}
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <label htmlFor="notes" className="text-sm font-medium">
-                    Notes
-                  </label>
-                  <Textarea
-                    id="notes"
-                    name="notes"
-                    placeholder="Reserved for VIP speakers, booth pickup only, etc."
-                  />
-                </div>
-                <SubmitButton
-                  type="submit"
-                  className="w-full"
-                  pendingText="Saving inventory..."
-                >
-                  Save inventory item
-                </SubmitButton>
-              </form>
-              {isError ? (
-                <p className="mt-4 text-sm text-destructive">
-                  Live event refresh failed. Showing the last available
-                  dashboard snapshot.
-                </p>
-              ) : null}
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+      <EventDashboardClient
+        attendees={data.attendees}
+        inventory={data.inventory}
+      />
     </div>
   )
 }

@@ -110,49 +110,7 @@ export default async function EventJoinPage({ params }: EventJoinPageProps) {
         </Button>
       }
     >
-      <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-        <Card>
-          <CardHeader>
-            <div className="flex flex-wrap items-center gap-3">
-              <Badge variant="secondary">Attendee self-check-in</Badge>
-              <Badge variant="success">
-                {formatProfession(profile?.profession)}
-              </Badge>
-            </div>
-            <CardTitle className="text-3xl">{joinData.event.name}</CardTitle>
-            <CardDescription>
-              Review the event details below, then add yourself to the
-              attendance list.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-lg border bg-muted/30 p-5">
-              <div className="text-sm text-muted-foreground">Attendee name</div>
-              <div className="mt-1 text-lg font-semibold">
-                {profile?.name ?? session.user.name ?? session.user.email}
-              </div>
-            </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
-              <div className="text-sm text-muted-foreground">PRC number</div>
-              <div className="mt-1 text-lg font-semibold">
-                {profile?.prcNumber ?? "Not supplied"}
-              </div>
-            </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
-              <div className="text-sm text-muted-foreground">Event date</div>
-              <div className="mt-1 text-lg font-semibold">
-                {formatDateTime(joinData.event.startAt)}
-              </div>
-            </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
-              <div className="text-sm text-muted-foreground">Hosted by</div>
-              <div className="mt-1 text-lg font-semibold">
-                {joinData.event.owner.name ?? joinData.event.owner.email}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
+      <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
         <Card>
           <CardHeader>
             <CardTitle>Attendance status</CardTitle>
@@ -163,7 +121,7 @@ export default async function EventJoinPage({ params }: EventJoinPageProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             {joinData.attendance ? (
-              <div className="rounded-lg border bg-muted/30 p-5">
+              <div className="rounded-lg border bg-muted/30 p-4">
                 <div className="font-medium text-foreground">
                   You are already signed in for this event.
                 </div>
@@ -173,7 +131,7 @@ export default async function EventJoinPage({ params }: EventJoinPageProps) {
                 </div>
               </div>
             ) : (
-              <div className="rounded-lg border bg-muted/30 p-5">
+              <div className="rounded-lg border bg-muted/30 p-4">
                 <div className="font-medium text-foreground">
                   You have not signed in yet.
                 </div>
@@ -199,6 +157,48 @@ export default async function EventJoinPage({ params }: EventJoinPageProps) {
                   : "Sign me into this event"}
               </SubmitButton>
             </form>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge variant="secondary">Attendee self-check-in</Badge>
+              <Badge variant="success">
+                {formatProfession(profile?.profession)}
+              </Badge>
+            </div>
+            <CardTitle className="text-3xl">{joinData.event.name}</CardTitle>
+            <CardDescription>
+              Review the event details below, then add yourself to the
+              attendance list.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-lg border bg-muted/30 p-4">
+              <div className="text-sm text-muted-foreground">Attendee name</div>
+              <div className="mt-1 text-lg font-semibold">
+                {profile?.name ?? session.user.name ?? session.user.email}
+              </div>
+            </div>
+            <div className="rounded-lg border bg-muted/30 p-4">
+              <div className="text-sm text-muted-foreground">PRC number</div>
+              <div className="mt-1 text-lg font-semibold">
+                {profile?.prcNumber ?? "Not supplied"}
+              </div>
+            </div>
+            <div className="rounded-lg border bg-muted/30 p-4">
+              <div className="text-sm text-muted-foreground">Event date</div>
+              <div className="mt-1 text-lg font-semibold">
+                {formatDateTime(joinData.event.startAt)}
+              </div>
+            </div>
+            <div className="rounded-lg border bg-muted/30 p-4">
+              <div className="text-sm text-muted-foreground">Hosted by</div>
+              <div className="mt-1 text-lg font-semibold">
+                {joinData.event.owner.name ?? joinData.event.owner.email}
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>

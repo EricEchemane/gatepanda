@@ -33,7 +33,7 @@ export default async function Page() {
   if (!session?.user) {
     return (
       <div className="min-h-svh bg-muted/30 px-4 py-6">
-        <div className="mx-auto flex min-h-[calc(100svh-3rem)] max-w-7xl flex-col gap-6">
+        <div className="mx-auto flex min-h-[calc(100svh-3rem)] max-w-6xl flex-col gap-6">
           <section className="overflow-hidden rounded-xl border bg-background">
             <div className="grid gap-8 px-6 py-8 lg:grid-cols-[1.15fr_0.85fr] lg:px-10 lg:py-10">
               <div className="space-y-6">
@@ -51,9 +51,17 @@ export default async function Page() {
                     dashboard.
                   </p>
                 </div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <GoogleSignInButton configured={hasGoogleAuth} />
-                  <Button asChild size="lg" variant="outline">
+                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <GoogleSignInButton
+                    configured={hasGoogleAuth}
+                    className="w-full sm:w-auto"
+                  />
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                  >
                     <Link href="#system-flow">See the workflow</Link>
                   </Button>
                 </div>
@@ -78,7 +86,7 @@ export default async function Page() {
                     {featurePoints.map((point) => (
                       <li
                         key={point}
-                        className="rounded-2xl border border-border/60 bg-background/75 px-4 py-3"
+                        className="rounded-lg border bg-background/75 px-4 py-3"
                       >
                         {point}
                       </li>

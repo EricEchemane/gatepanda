@@ -1,9 +1,11 @@
+import Link from "next/link"
 import { redirect } from "next/navigation"
 import QRCode from "qrcode"
 
 import { AppShell } from "@/components/app-shell"
 import { SetupCallout } from "@/components/setup-callout"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -34,6 +36,11 @@ export default async function MyQrPage() {
         user={session.user}
         title="My Attendee QR"
         description="Generate your attendee QR code so event admins can verify and check you in."
+        actions={
+          <Button asChild variant="outline">
+            <Link href="/profile">Edit profile</Link>
+          </Button>
+        }
       >
         <SetupCallout
           title="QR generation depends on your attendee profile"
@@ -63,8 +70,13 @@ export default async function MyQrPage() {
       user={session.user}
       title="Personal Event QR"
       description="Share this code at the registration desk. Admins scan it, review your details, then confirm your attendance."
+      actions={
+        <Button asChild variant="outline">
+          <Link href="/profile">Edit profile</Link>
+        </Button>
+      }
     >
-      <div className="grid gap-6 lg:grid-cols-[1fr_0.92fr]">
+      <div className="grid gap-6 xl:grid-cols-[1fr_0.92fr]">
         <Card>
           <CardHeader>
             <CardTitle>Ready to present at the venue</CardTitle>
@@ -80,7 +92,7 @@ export default async function MyQrPage() {
               alt="Personal attendee QR code"
               className="w-full max-w-sm rounded-lg border bg-white p-4"
             />
-            <div className="w-full rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
+            <div className="w-full rounded-lg border bg-muted/30 p-4 text-sm break-all text-muted-foreground">
               {attendeeUrl}
             </div>
           </CardContent>
@@ -98,19 +110,19 @@ export default async function MyQrPage() {
             <Badge variant="success">
               {formatProfession(profile.profession)}
             </Badge>
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">Name</div>
               <div className="mt-1 text-xl font-semibold">
                 {profile.name ?? session.user.name}
               </div>
             </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">PRC number</div>
               <div className="mt-1 text-xl font-semibold">
                 {profile.prcNumber ?? "Not supplied yet"}
               </div>
             </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">Organization</div>
               <div className="mt-1 text-xl font-semibold">
                 {profile.organization ?? "Independent practice"}

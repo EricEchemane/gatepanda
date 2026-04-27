@@ -45,7 +45,7 @@ export function QrScannerPanel({ eventId }: QrScannerPanelProps) {
         <CardContent>
           <div
             id={regionId}
-            className="min-h-80 rounded-[2rem] border border-dashed border-primary/30 bg-muted/30"
+            className="min-h-80 rounded-xl border border-dashed bg-muted/30"
           />
           <div className="mt-4 text-sm text-muted-foreground">
             Scanner status:{" "}

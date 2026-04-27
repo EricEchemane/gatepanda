@@ -14,7 +14,7 @@ type SetupCalloutProps = {
 
 export function SetupCallout({ title, description, items }: SetupCalloutProps) {
   return (
-    <Card className="border-dashed border-primary/30 bg-primary/5">
+    <Card className="border-dashed bg-background">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
@@ -22,7 +22,7 @@ export function SetupCallout({ title, description, items }: SetupCalloutProps) {
       <CardContent>
         <ul className="space-y-2 text-sm text-muted-foreground">
           {items.map((item) => (
-            <li key={item} className="rounded-2xl bg-background/70 px-3 py-2">
+            <li key={item} className="rounded-lg border bg-muted/30 px-3 py-2">
               {item}
             </li>
           ))}

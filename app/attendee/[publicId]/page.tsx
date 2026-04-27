@@ -45,25 +45,25 @@ export default async function AttendeePage({ params }: AttendeePageProps) {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">Profession</div>
               <div className="mt-1 text-lg font-semibold">
                 {formatProfession(attendee.profession)}
               </div>
             </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">PRC number</div>
               <div className="mt-1 text-lg font-semibold">
                 {attendee.prcNumber ?? "Not supplied"}
               </div>
             </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">Organization</div>
               <div className="mt-1 text-lg font-semibold">
                 {attendee.organization ?? "Independent practice"}
               </div>
             </div>
-            <div className="rounded-lg border bg-muted/30 p-5">
+            <div className="rounded-lg border bg-muted/30 p-4">
               <div className="text-sm text-muted-foreground">City</div>
               <div className="mt-1 text-lg font-semibold">
                 {attendee.city ?? "Not supplied"}

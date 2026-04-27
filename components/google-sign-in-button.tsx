@@ -8,16 +8,19 @@ import { LoadingButton } from "@/components/loading-button"
 type GoogleSignInButtonProps = {
   configured: boolean
   callbackUrl?: string
+  className?: string
 }
 
 export function GoogleSignInButton({
   configured,
   callbackUrl = "/",
+  className,
 }: GoogleSignInButtonProps) {
   const [isPending, startTransition] = useTransition()
 
   return (
     <LoadingButton
+      className={className}
       size="lg"
       loading={isPending}
       loadingText="Connecting to Google..."
